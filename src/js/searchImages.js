@@ -5,8 +5,12 @@ import { defaultModules } from '@pnotify/core/dist/PNotify.js';
 import * as PNotifyMobile from '@pnotify/mobile/dist/PNotifyMobile.js';
 import { defaults } from '@pnotify/core';
 import { error, info } from '@pnotify/core';
+import * as basicLightbox from 'basiclightbox';
 
 setupPNotify();
+const instance = basicLightbox.create(`
+    <img src="" width="800" >
+`);
 
 refs.searchForm.addEventListener('submit', onSearchImageFormSubmit);
 refs.loadBtn.addEventListener('click', onLoadMoreBtnClick);
@@ -63,3 +67,5 @@ function setupPNotify() {
   defaults.hide = true;
   defaults.delay = 2000;
 }
+
+instance.show();

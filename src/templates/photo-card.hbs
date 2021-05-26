@@ -1,7 +1,15 @@
 {{#each this}}
   <li class='gallery_item'>
     <div class='photo-card'>
-      <img src='{{this.webformatURL}}' alt='{{this.tags}}' />
+      <a href='{{this.largeImageURL}}'>
+        <img
+          src='{{this.webformatURL}}'
+          alt='{{this.tags}}'
+          ,
+          data-source='{{this.largeImageURL}}'
+        />
+      </a>
+
       <div class='stats'>
         <p class='stats-item'>
           <i class='material-icons'>thumb_up</i>
