@@ -7,17 +7,13 @@ export const apiService = {
   page: 1,
 
   getImage: async function () {
-    const data = await fetch(
+    const response = await fetch(
       `${this.basicURL}?${this.imageParams}&q=${this.searchQuery}&page=${this.page}&per_page=12&key=${APIKEY}`,
-    )
-      .then(response => {
-        return response.json();
-      })
-      .then(result => {
-        return result.hits;
-      });
+    );
+    const result = await response.json();
+
     this.incrPage();
-    return data;
+    return result;
   },
 
   incrPage() {

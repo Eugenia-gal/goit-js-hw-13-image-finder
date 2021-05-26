@@ -1,6 +1,12 @@
 import { apiService } from './apiService';
 import { refs } from './refs';
 import card from '../templates/photo-card';
+import { defaultModules } from '@pnotify/core/dist/PNotify.js';
+import * as PNotifyMobile from '@pnotify/mobile/dist/PNotifyMobile.js';
+import { defaults } from '@pnotify/core';
+import { error, info } from '@pnotify/core';
+
+setupPNotify();
 
 refs.searchForm.addEventListener('submit', onSearchImageFormSubmit);
 refs.loadBtn.addEventListener('click', onLoadMoreBtnClick);
@@ -13,7 +19,6 @@ function onSearchImageFormSubmit(e) {
 
   const input = e.currentTarget.elements.query;
   apiService.setQuery(input.value);
-  //   console.log(apiService.getQuery());
 
   getAndRenderImages();
 }
@@ -24,8 +29,21 @@ async function onLoadMoreBtnClick() {
 }
 
 async function getAndRenderImages() {
-  const images = await apiService.getImage();
-  makeMarkupPhotoCards(images);
+  try {
+    const images = await apiService.getImage();
+
+    if (images.hits.length === 0) {
+      info({
+        text: 'Matches not found. Please try another query!',
+      });
+      return;
+    }
+    makeMarkupPhotoCards(images.hits);
+  } catch (err) {
+    error({
+      text: `Oops! Something went wrong: ${err.message}`,
+    });
+  }
 }
 
 function clearGalleryUI() {
@@ -35,4 +53,13 @@ function clearGalleryUI() {
 function makeMarkupPhotoCards(images) {
   let cardsMarkup = card(images);
   refs.galleryEl.insertAdjacentHTML('beforeend', cardsMarkup);
+}
+
+function setupPNotify() {
+  defaultModules.set(PNotifyMobile, {});
+  defaults.styling = 'material';
+  defaults.icons = 'material';
+  defaults.shadow = true;
+  defaults.hide = true;
+  defaults.delay = 2000;
 }
