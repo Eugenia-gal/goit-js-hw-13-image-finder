@@ -1,0 +1,37 @@
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-gap: 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.gallery img {
+  display: block;
+  width: 100%;
+  height: 250px;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-around;
+  background-color: rgb(224, 221, 221);
+}
+
+.stats-item {
+  font-size: 18px;
+  font-weight: bold;
+  color: #03a0b4;
+}
+
+.load-more-btn {
+  //   width: 40px;
+  height: 36px;
+  border: 1px solid #00b4cc;
+  background: #00b4cc;
+  text-align: center;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+}
