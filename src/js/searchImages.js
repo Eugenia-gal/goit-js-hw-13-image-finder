@@ -8,12 +8,10 @@ import { error, info } from '@pnotify/core';
 import * as basicLightbox from 'basiclightbox';
 
 setupPNotify();
-const instance = basicLightbox.create(`
-    <img src="" width="800" >
-`);
 
 refs.searchForm.addEventListener('submit', onSearchImageFormSubmit);
 refs.loadBtn.addEventListener('click', onLoadMoreBtnClick);
+refs.galleryEl.addEventListener('click', onGalleryItemClick);
 
 function onSearchImageFormSubmit(e) {
   e.preventDefault();
@@ -68,4 +66,18 @@ function setupPNotify() {
   defaults.delay = 2000;
 }
 
-instance.show();
+function onGalleryItemClick(e) {
+  e.preventDefault();
+  console.log(e.target);
+  const modal = basicLightbox.create(`
+    <img src="" width="800" >
+`);
+  const modalImgEl = modal.element().querySelector('img');
+  modalImgEl.src = e.target.dataset.source;
+  console.log(modalImgEl);
+  // lightBoxImageEl.src = e.target.dataset.source;
+  // lightBoxImageEl.alt = e.target.alt;
+
+  modal.show();
+  // lightBoxEl.classList.add('is-open');
+}

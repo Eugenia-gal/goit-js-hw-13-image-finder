@@ -5,8 +5,10 @@
 
 // Стили для файла с примером HTML-фрагмента
 
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
 @import '@pnotify/core/dist/PNotify.css';
 @import '@pnotify/mobile/dist/PNotifyMobile.css';
 @import '@pnotify/core/dist/Material.css';
 @import './search-form.scss';
 @import './gallery.scss';
+@import 'basiclightbox/src/styles/main.scss';
