@@ -1,13 +1,8 @@
 import { apiService } from './apiService';
 import { refs } from './refs';
 import card from '../templates/photo-card';
-import { defaultModules } from '@pnotify/core/dist/PNotify.js';
-import * as PNotifyMobile from '@pnotify/mobile/dist/PNotifyMobile.js';
-import { defaults } from '@pnotify/core';
-import { error, info } from '@pnotify/core';
-import * as basicLightbox from 'basiclightbox';
-
-setupPNotify();
+import { showNoMatchesNotify, showGetErrorNotify } from './notify';
+import { showLargeImage } from './modal';
 
 refs.searchForm.addEventListener('submit', onSearchImageFormSubmit);
 refs.loadBtn.addEventListener('click', onLoadMoreBtnClick);
@@ -35,16 +30,13 @@ async function getAndRenderImages() {
     const images = await apiService.getImage();
 
     if (images.hits.length === 0) {
-      info({
-        text: 'Matches not found. Please try another query!',
-      });
+      showNoMatchesNotify();
       return;
     }
     makeMarkupPhotoCards(images.hits);
+    refs.loadBtn.classList.remove('visually-hidden');
   } catch (err) {
-    error({
-      text: `Oops! Something went wrong: ${err.message}`,
-    });
+    showGetErrorNotify(err);
   }
 }
 
@@ -57,27 +49,7 @@ function makeMarkupPhotoCards(images) {
   refs.galleryEl.insertAdjacentHTML('beforeend', cardsMarkup);
 }
 
-function setupPNotify() {
-  defaultModules.set(PNotifyMobile, {});
-  defaults.styling = 'material';
-  defaults.icons = 'material';
-  defaults.shadow = true;
-  defaults.hide = true;
-  defaults.delay = 2000;
-}
-
 function onGalleryItemClick(e) {
   e.preventDefault();
-  console.log(e.target);
-  const modal = basicLightbox.create(`
-    <img src="" width="800" >
-`);
-  const modalImgEl = modal.element().querySelector('img');
-  modalImgEl.src = e.target.dataset.source;
-  console.log(modalImgEl);
-  // lightBoxImageEl.src = e.target.dataset.source;
-  // lightBoxImageEl.alt = e.target.alt;
-
-  modal.show();
-  // lightBoxEl.classList.add('is-open');
+  showLargeImage(e);
 }

@@ -5,7 +5,8 @@
 
 // Стили для файла с примером HTML-фрагмента
 
-@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+@import './common.scss';
+@import './visually-hidden';
 @import '@pnotify/core/dist/PNotify.css';
 @import '@pnotify/mobile/dist/PNotifyMobile.css';
 @import '@pnotify/core/dist/Material.css';
