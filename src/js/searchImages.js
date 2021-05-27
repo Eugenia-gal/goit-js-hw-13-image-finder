@@ -3,12 +3,13 @@ import { refs } from './refs';
 import card from '../templates/photo-card';
 import { showNoMatchesNotify, showGetErrorNotify } from './notify';
 import { showLargeImage } from './modal';
+import infiniteScroll from './infinitScroll';
 
 refs.searchForm.addEventListener('submit', onSearchImageFormSubmit);
 refs.loadBtn.addEventListener('click', onLoadMoreBtnClick);
 refs.galleryEl.addEventListener('click', onGalleryItemClick);
 
-function onSearchImageFormSubmit(e) {
+async function onSearchImageFormSubmit(e) {
   e.preventDefault();
 
   clearGalleryUI();
@@ -17,7 +18,14 @@ function onSearchImageFormSubmit(e) {
   const input = e.currentTarget.elements.query;
   apiService.setQuery(input.value);
 
-  getAndRenderImages();
+  await getAndRenderImages();
+  infiniteScroll();
+
+  // refs.loadBtn.classList.remove('visually-hidden');
+
+  //  Реализация пагинации с помощью кнопки Load More:
+  // 1. Разкомментировать операцию удаления с кнопки класса 'visually-hidden'
+  // 2. Закомментировать строку с вызовом функции infiniteScroll();
 }
 
 async function onLoadMoreBtnClick() {
@@ -25,7 +33,7 @@ async function onLoadMoreBtnClick() {
   refs.loadBtn.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
 
-async function getAndRenderImages() {
+export async function getAndRenderImages() {
   try {
     const images = await apiService.getImage();
 
@@ -34,7 +42,6 @@ async function getAndRenderImages() {
       return;
     }
     makeMarkupPhotoCards(images.hits);
-    refs.loadBtn.classList.remove('visually-hidden');
   } catch (err) {
     showGetErrorNotify(err);
   }
